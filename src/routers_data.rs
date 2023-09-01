@@ -54,7 +54,7 @@ pub fn data_select_all(schema: &str) -> String {
 
     let res: HttpDataRes = HttpDataRes {
         status: 200,
-        length: 0,
+        length: 10,
         schema: Some(schema.to_string()),
         record: None,
         result: Some(valuefy(record_json_array)),

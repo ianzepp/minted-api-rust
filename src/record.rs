@@ -2,6 +2,7 @@ use std::collections::HashMap;
 use serde::{Deserialize, Serialize};
 use rocket::serde::json::Value;
 
+/** Custom type specifications */
 pub type UUID = String;
 pub type RecordData = HashMap<String, Value>;
 
