@@ -4,6 +4,8 @@
 #[macro_use] extern crate rocket;
 
 use rocket::response::status;
+mod helper;
+mod record;
 mod routers_data; // Import the new file
 
 // Routes
