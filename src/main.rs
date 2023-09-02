@@ -27,6 +27,16 @@ fn not_found(path: std::path::PathBuf) -> status::NotFound<String> {
     status::NotFound(format!("Not found: {}", path.to_str().unwrap_or("Invalid path")))
 }
 
+// #[derive(Debug)]
+// #[derive(Deserialize, Serialize)]
+// pub struct HttpDataRes {
+//     pub status: i32,
+//     pub length: i32,
+//     pub schema: Option<String>,
+//     pub record: Option<String>,
+//     pub result: Option<Value>,
+// }
+
 // let res: HttpDataRes = HttpDataRes {
 //     status: 200,
 //     length: 10,
