@@ -9,10 +9,7 @@ use diesel::pg::PgConnection;
 use dotenv::dotenv;
 use std::env;
 
-mod models;
-mod schema;
 mod helper;
-mod record;
 mod routers_data;
 
 pub fn establish_connection() -> PgConnection {
@@ -32,7 +29,7 @@ fn not_found(path: std::path::PathBuf) -> status::NotFound<String> {
 #[rocket::launch]
 fn rocket() -> _ {
     rocket::build()
-    .mount("/api", routes![routers_data::data_select_all]) // Use the function from the new file
-    .mount("/api", routes![routers_data::data_select_one]) // Use the function from the new file
-    .mount("/", routes![not_found])
+        .mount("/api", routes![routers_data::data_select_all]) // Use the function from the new file
+        .mount("/api", routes![routers_data::data_select_one]) // Use the function from the new file
+        .mount("/", routes![not_found])
 }
