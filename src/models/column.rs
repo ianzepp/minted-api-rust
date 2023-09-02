@@ -1,12 +1,11 @@
 use diesel::prelude::*;
-use diesel::sql_types::Uuid;
 
 // Rust definition
 #[derive(Queryable, Selectable)]
 #[diesel(table_name = crate::models::column::column)]
 #[diesel(check_for_backend(diesel::pg::Pg))]
 pub struct ColumnType {
-    pub id: Uuid,
+    pub id: uuid::Uuid,
     pub ns: Option<String>,
     pub sc: Option<String>,
     pub schema_name: String,
@@ -17,7 +16,7 @@ pub struct ColumnType {
 // Table definition
 diesel::table! {
     column (id) {
-        id -> Uuid,
+        id -> diesel::sql_types::Uuid,
         ns -> Nullable<Varchar>,
         sc -> Nullable<Varchar>,
         schema_name -> Varchar,
