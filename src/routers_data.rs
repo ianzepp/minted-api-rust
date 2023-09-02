@@ -1,12 +1,15 @@
+use diesel::deserialize::FromSqlRow;
 // src/routers-data.rs
 use rocket::get;
-use rocket::serde::json::{json, Value};
+use rocket::serde::json::Value;
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 
 // Local imports
 use crate::helper::{jsonify, valuefy};
 use crate::record::*;
+use crate::establish_connection;
+
 
 #[derive(Debug, Deserialize, Serialize)]
 pub struct HttpDataRes {
@@ -17,8 +20,8 @@ pub struct HttpDataRes {
     pub result: Option<Value>,
 }
 
-#[get("/data/<schema>")]
-pub fn data_select_all(schema: &str) -> String {
+#[get("/data/<fixme>")]
+pub fn data_select_all(fixme: &str) -> String {
     // Placeholder array of RecordJson instances
     let mut record_json_array: Vec<RecordJson> = Vec::new();
 
@@ -55,7 +58,7 @@ pub fn data_select_all(schema: &str) -> String {
     let res: HttpDataRes = HttpDataRes {
         status: 200,
         length: 10,
-        schema: Some(schema.to_string()),
+        schema: None,
         record: None,
         result: Some(valuefy(record_json_array)),
     };
@@ -64,7 +67,7 @@ pub fn data_select_all(schema: &str) -> String {
     jsonify(res)
 }
 
-#[get("/data/<schema>/<record>")]
-pub fn data_select_one(schema: &str, record: &str) -> String {
-    json!({"status": 200, "schema": schema, "result": record}).to_string()
+#[get("/data/schema/<record>")]
+pub fn data_select_one(record: String) {
+    //
 }
