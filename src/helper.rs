@@ -1,4 +1,4 @@
-use serde::Serialize;
+use rocket::serde::Serialize;
 use rocket::serde::json::{to_value, to_string, Value};
 
 pub fn jsonify<T: Serialize>(value: T) -> String {
