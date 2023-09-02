@@ -9,6 +9,7 @@ use diesel::pg::PgConnection;
 use dotenv::dotenv;
 use std::env;
 
+mod system_data;
 mod models;
 mod helper;
 mod routers;
