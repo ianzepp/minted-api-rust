@@ -1,39 +1,51 @@
 use std::collections::HashMap;
-use serde::{Deserialize, Serialize};
+use rocket::serde::{Serialize, Deserialize};
 use rocket::serde::json::Value;
 
 /** Custom type specifications */
 pub type RecordHash = HashMap<String, Value>;
 
-#[derive(Debug)]
+#[derive(Debug, Default)]
 #[derive(Serialize, Deserialize)]
 pub struct Record {
-    pub data: RecordHash,
     pub meta: RecordHash,
+    pub data: RecordHash,
 }
 
-pub fn to_record(flat: RecordHash) -> Record {
-    let mut data = flat.clone();
-    data.retain(|k, _| k != "id" && k != "ns" && k != "sc");
+impl Record {
+    pub fn new() -> Self {
+        Self::default()
+    }
 
-    let mut meta = RecordHash::new();
-    meta.insert("id".to_string(), flat["id"].clone());
-    meta.insert("ns".to_string(), flat["ns"].clone());
-    meta.insert("sc".to_string(), flat["sc"].clone());
+    pub fn hashify<S: Into<String>>(id: S, name: S) -> Self {
+        let mut data = RecordHash::new();
+        data.insert("id".to_string(), Value::String(id.into()));
+        data.insert("ns".to_string(), Value::Null);
 
-    Record {
-        data: data,
-        meta: meta,
+        let mut meta = RecordHash::new();
+        meta.insert("sc".to_string(), Value::Null);
+        meta.insert("schema_name".to_string(), Value::String(name.into()));
+        meta.insert("description".to_string(), Value::Null);
+
+        Self { data, meta }
+    }
+
+    pub fn flatten(self) -> RecordHash {
+        let mut flat = RecordHash::new();
+
+        flat.extend(self.data);
+        flat.extend(self.meta);
+
+        flat
+    }
+
+    pub fn broaden(flat: RecordHash) -> Self {
+        let mut data = flat.clone();
+        data.retain(|k, _| k != "id" && k != "ns" && k != "sc");
+
+        let mut meta = flat.clone();
+        meta.retain(|k, _| k == "id" || k == "ns" || k == "sc");
+
+        Self { data, meta }
     }
 }
-
-pub fn to_record_flat(record: Record) -> HashMap<String, Value> {
-    let mut flat = RecordHash::new();
-
-    flat.extend(record.data.clone());
-    flat.extend(record.meta.clone());
-
-    // Done
-    flat
-}
-
