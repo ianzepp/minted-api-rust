@@ -1,7 +1,11 @@
 use diesel::prelude::*;
+use rocket::serde::{Serialize, Deserialize};
 
 // Rust definition
+#[derive(Debug, Default)]
 #[derive(Queryable, Selectable)]
+#[derive(Serialize, Deserialize)]
+#[serde(crate = "rocket::serde")]
 #[diesel(table_name = crate::models::schema::schema)]
 #[diesel(check_for_backend(diesel::pg::Pg))]
 pub struct SchemaType {

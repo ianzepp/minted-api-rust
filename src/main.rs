@@ -4,24 +4,13 @@
 #[macro_use] extern crate rocket;
 
 use rocket::response::status;
-use diesel::prelude::*;
-use diesel::pg::PgConnection;
-use dotenv::dotenv;
-use std::env;
 
-mod system_data;
-mod models;
+// Internal modules
+mod database;
 mod helper;
+mod models;
 mod routers;
-
-pub fn establish_connection() -> PgConnection {
-    dotenv().ok();
-
-    let database_url = env::var("DATABASE_URL").expect("DATABASE_URL must be set");
-
-    PgConnection::establish(&database_url)
-        .unwrap_or_else(|_| panic!("Error connecting to {}", database_url))
-}
+mod system_data;
 
 #[get("/<path..>", rank = 2)]
 fn not_found(path: std::path::PathBuf) -> status::NotFound<String> {

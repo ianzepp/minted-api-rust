@@ -7,6 +7,7 @@ pub type RecordHash = HashMap<String, Value>;
 
 #[derive(Debug, Default)]
 #[derive(Serialize, Deserialize)]
+#[serde(crate = "rocket::serde")]
 pub struct Record {
     pub meta: RecordHash,
     pub data: RecordHash,
